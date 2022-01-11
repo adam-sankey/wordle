@@ -15,7 +15,7 @@ letterPositions = {}
 
 #get confirmed non-position of letters
 for letter in letters:
-    letterPositions[letter] = input("Enter positions confirmed not to be used for " + letter + " : ")
+    letterPositions[letter] = input("Enter positions (0-4) confirmed not to be used for " + letter + " : ")
     letterPlaceHolder = letterPositions[letter]
     letterPositions[letter] = letterPlaceHolder.split(",")
 
