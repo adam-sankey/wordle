@@ -1,4 +1,4 @@
-# Wordle Puzzle Solver
+# Wordle Solver
 
 A command-line Python script that narrows down possible Wordle answers based on your known letter clues.
 
