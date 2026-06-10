@@ -10,7 +10,7 @@ let guesses = [];
 // ── Init ──────────────────────────────────────────────────────────────────────
 
 document.addEventListener("DOMContentLoaded", () => {
-  document.querySelectorAll(".tile").forEach((tile, i) =>
+  document.querySelectorAll("#tiles .tile").forEach((tile, i) =>
     tile.addEventListener("click", () => cycleTile(i))
   );
 
@@ -37,13 +37,13 @@ function syncLetters() {
     .toUpperCase()
     .replace(/[^A-Z]/g, "")
     .slice(0, 5);
-  document.querySelectorAll(".tile").forEach((tile, i) => {
+  document.querySelectorAll("#tiles .tile").forEach((tile, i) => {
     tile.textContent = letters[i] ?? "?";
   });
 }
 
 function renderTiles() {
-  document.querySelectorAll(".tile").forEach((tile, i) => {
+  document.querySelectorAll("#tiles .tile").forEach((tile, i) => {
     tile.className = "tile " + TILE_CLASS[tileStates[i]];
   });
 }
