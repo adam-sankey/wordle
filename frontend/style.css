@@ -1,0 +1,205 @@
+:root {
+  --green:  #6aaa64;
+  --yellow: #c9b458;
+  --grey:   #787c7e;
+  --bg:     #121213;
+  --surface:#1a1a1b;
+  --border: #3a3a3c;
+  --text:   #ffffff;
+  --muted:  #818384;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  font-family: 'Clear Sans', 'Helvetica Neue', Arial, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  min-height: 100vh;
+}
+
+#app {
+  max-width: 660px;
+  margin: 0 auto;
+  padding: 20px 16px 80px;
+}
+
+/* Header */
+header {
+  text-align: center;
+  padding: 20px 0 24px;
+  border-bottom: 1px solid var(--border);
+  margin-bottom: 24px;
+}
+
+header h1 {
+  font-size: 1.8rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+header p {
+  color: var(--muted);
+  margin-top: 8px;
+  font-size: 0.88rem;
+}
+
+/* Tiles */
+.tile {
+  width: 52px;
+  height: 52px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.35rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  border-radius: 4px;
+  border: 2px solid var(--border);
+  cursor: pointer;
+  user-select: none;
+  transition: background 0.12s, border-color 0.12s;
+}
+
+.tile.small { width: 40px; height: 40px; font-size: 1rem; cursor: default; }
+
+.tile.grey   { background: var(--grey);   border-color: var(--grey);   }
+.tile.green  { background: var(--green);  border-color: var(--green);  }
+.tile.yellow { background: var(--yellow); border-color: var(--yellow); }
+
+/* History */
+#history { display: flex; flex-direction: column; gap: 6px; margin-bottom: 20px; }
+
+.history-row { display: flex; gap: 6px; }
+
+/* Input section */
+#input-section {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 20px;
+  margin-bottom: 24px;
+}
+
+#guess-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  align-items: center;
+}
+
+#word-input {
+  flex: 1;
+  min-width: 160px;
+  background: var(--bg);
+  border: 2px solid var(--border);
+  border-radius: 6px;
+  color: var(--text);
+  font-size: 1.2rem;
+  font-weight: 700;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  padding: 10px 14px;
+  outline: none;
+}
+
+#word-input:focus { border-color: #565758; }
+
+#tiles { display: flex; gap: 6px; }
+
+.hint { color: var(--muted); font-size: 0.78rem; margin-top: 14px; line-height: 1.5; }
+
+.swatch {
+  display: inline-block;
+  padding: 1px 6px;
+  border-radius: 3px;
+  font-weight: 700;
+  font-size: 0.75rem;
+}
+.grey-swatch   { background: var(--grey);   }
+.green-swatch  { background: var(--green);  }
+.yellow-swatch { background: var(--yellow); }
+
+/* Buttons */
+button {
+  background: var(--green);
+  color: white;
+  border: none;
+  border-radius: 6px;
+  padding: 12px 28px;
+  font-size: 0.95rem;
+  font-weight: 700;
+  cursor: pointer;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  transition: opacity 0.15s;
+  margin-top: 16px;
+}
+
+button:hover { opacity: 0.85; }
+button:disabled { opacity: 0.45; cursor: not-allowed; }
+
+#reset-btn { background: var(--border); display: block; margin: 24px auto 0; }
+
+/* Results */
+#results {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 20px;
+}
+
+#candidates-count {
+  font-size: 1rem;
+  font-weight: 700;
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+#results-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 24px;
+}
+
+@media (max-width: 480px) { #results-grid { grid-template-columns: 1fr; } }
+
+#results h3 {
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  margin-bottom: 6px;
+  color: var(--muted);
+}
+
+.method-desc {
+  font-size: 0.75rem;
+  color: var(--muted);
+  margin-bottom: 10px;
+  line-height: 1.45;
+}
+
+.star { color: var(--yellow); }
+
+ol { list-style: none; display: flex; flex-direction: column; gap: 3px; }
+
+ol li {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 5px 8px;
+  border-radius: 4px;
+  font-size: 0.88rem;
+}
+
+ol li.candidate { background: rgba(106, 170, 100, 0.15); }
+
+.result-word { font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; }
+.result-score { color: var(--muted); font-size: 0.78rem; font-family: monospace; }
+
+#error-msg {
+  color: #e57373;
+  font-size: 0.85rem;
+  margin-top: 10px;
+}

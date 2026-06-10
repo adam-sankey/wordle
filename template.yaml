@@ -1,0 +1,45 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+
+Description: 5letter.sankey.tech — Wordle Solver backend
+
+Globals:
+  Function:
+    Runtime: python3.12
+    # 1769 MB = one full vCPU; the entropy ranking is CPU-bound
+    MemorySize: 1769
+    Timeout: 28
+
+Resources:
+
+  SolverFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      FunctionName: five-letter-solver
+      CodeUri: backend/
+      Handler: handler.lambda_handler
+      Events:
+        ApiPost:
+          Type: HttpApi
+          Properties:
+            Path: /api/solve
+            Method: POST
+            ApiId: !Ref HttpApi
+
+  HttpApi:
+    Type: AWS::Serverless::HttpApi
+    Properties:
+      StageName: $default
+      CorsConfiguration:
+        AllowOrigins:
+          - "*"
+        AllowMethods:
+          - POST
+          - OPTIONS
+        AllowHeaders:
+          - Content-Type
+
+Outputs:
+  ApiUrl:
+    Description: Paste this URL as the API Gateway origin in CloudFront
+    Value: !Sub "https://${HttpApi}.execute-api.${AWS::Region}.amazonaws.com"

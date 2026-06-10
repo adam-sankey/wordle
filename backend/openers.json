@@ -1,0 +1,187 @@
+{
+  "candidates_count": 12478,
+  "frequency_ranked": [
+    {
+      "word": "AEROS",
+      "score": 23886
+    },
+    {
+      "word": "AROSE",
+      "score": 23886
+    },
+    {
+      "word": "SOARE",
+      "score": 23886
+    },
+    {
+      "word": "AESIR",
+      "score": 23580
+    },
+    {
+      "word": "ARISE",
+      "score": 23580
+    },
+    {
+      "word": "RAISE",
+      "score": 23580
+    },
+    {
+      "word": "SERAI",
+      "score": 23580
+    },
+    {
+      "word": "ARLES",
+      "score": 23159
+    },
+    {
+      "word": "EARLS",
+      "score": 23159
+    },
+    {
+      "word": "LAERS",
+      "score": 23159
+    },
+    {
+      "word": "LARES",
+      "score": 23159
+    },
+    {
+      "word": "LASER",
+      "score": 23159
+    },
+    {
+      "word": "LEARS",
+      "score": 23159
+    },
+    {
+      "word": "RALES",
+      "score": 23159
+    },
+    {
+      "word": "REALS",
+      "score": 23159
+    },
+    {
+      "word": "SERAL",
+      "score": 23159
+    },
+    {
+      "word": "ALOES",
+      "score": 23114
+    },
+    {
+      "word": "ARETS",
+      "score": 23093
+    },
+    {
+      "word": "ASTER",
+      "score": 23093
+    },
+    {
+      "word": "EARST",
+      "score": 23093
+    }
+  ],
+  "info_ranked": [
+    {
+      "word": "TARES",
+      "score": 45.6,
+      "is_candidate": true
+    },
+    {
+      "word": "LARES",
+      "score": 45.3,
+      "is_candidate": true
+    },
+    {
+      "word": "RALES",
+      "score": 45.0,
+      "is_candidate": true
+    },
+    {
+      "word": "RATES",
+      "score": 44.9,
+      "is_candidate": true
+    },
+    {
+      "word": "TERAS",
+      "score": 44.8,
+      "is_candidate": true
+    },
+    {
+      "word": "NARES",
+      "score": 44.7,
+      "is_candidate": true
+    },
+    {
+      "word": "SOARE",
+      "score": 44.6,
+      "is_candidate": true
+    },
+    {
+      "word": "TALES",
+      "score": 44.6,
+      "is_candidate": true
+    },
+    {
+      "word": "ARLES",
+      "score": 44.4,
+      "is_candidate": true
+    },
+    {
+      "word": "TEARS",
+      "score": 44.4,
+      "is_candidate": true
+    },
+    {
+      "word": "SALET",
+      "score": 44.3,
+      "is_candidate": true
+    },
+    {
+      "word": "TORES",
+      "score": 44.3,
+      "is_candidate": true
+    },
+    {
+      "word": "AEROS",
+      "score": 44.2,
+      "is_candidate": true
+    },
+    {
+      "word": "DARES",
+      "score": 44.2,
+      "is_candidate": true
+    },
+    {
+      "word": "REALS",
+      "score": 44.2,
+      "is_candidate": true
+    },
+    {
+      "word": "SANER",
+      "score": 44.2,
+      "is_candidate": true
+    },
+    {
+      "word": "LEARS",
+      "score": 44.1,
+      "is_candidate": true
+    },
+    {
+      "word": "LORES",
+      "score": 44.0,
+      "is_candidate": true
+    },
+    {
+      "word": "CARES",
+      "score": 43.9,
+      "is_candidate": true
+    },
+    {
+      "word": "LAERS",
+      "score": 43.9,
+      "is_candidate": true
+    }
+  ]
+}
