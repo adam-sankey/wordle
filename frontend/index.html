@@ -44,12 +44,12 @@
       <div id="results-grid">
         <div>
           <h3>Frequency Score</h3>
-          <p class="method-desc">Candidates ranked by how common their letters are across all remaining words.</p>
+          <p class="method-desc">Top 10 candidates ranked by how common their letters are across all remaining words. Every word listed here is a valid possible answer.</p>
           <ol id="freq-list"></ol>
         </div>
         <div>
           <h3>Information Gain</h3>
-          <p class="method-desc">All dictionary words ranked by how evenly they split the remaining candidates. <span class="star">★</span> = valid answer.</p>
+          <p class="method-desc">Top 10 words ranked by how evenly they split the remaining candidates. Some of these may not be valid solutions &mdash; they're suggested purely to eliminate possibilities &mdash; which is why words that <em>are</em> valid answers get a <span class="star">*</span>. Information gain works best on your second (and maybe third) guess, when ruling out the most words matters more than guessing the answer outright.</p>
           <ol id="info-list"></ol>
         </div>
       </div>

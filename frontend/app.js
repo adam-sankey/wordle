@@ -1,6 +1,8 @@
 // Change to the full API Gateway URL when testing locally outside of CloudFront
 const API_URL = "/api/solve";
 
+const TOP_N = 10;
+
 const CYCLE = ["X", "G", "Y"];
 const TILE_CLASS = { X: "grey", G: "green", Y: "yellow" };
 
@@ -139,15 +141,15 @@ function renderResults(data) {
     countEl.textContent = `${count.toLocaleString()} possible word${count !== 1 ? "s" : ""} remaining`;
   }
 
-  renderList("freq-list", data.frequency_ranked, ({ word, score }) =>
+  renderList("freq-list", data.frequency_ranked.slice(0, TOP_N), ({ word, score }) =>
     `<span class="result-word">${word}</span><span class="result-score">${score}</span>`
   );
 
   // Before any guess every word is trivially a candidate — skip the markers.
   const markCandidates = guesses.length > 0;
-  renderList("info-list", data.info_ranked, ({ word, score, is_candidate }) => {
-    const star = markCandidates && is_candidate ? '<span class="star">★</span> ' : "";
-    return `<span class="result-word">${star}${word}</span><span class="result-score">${score}/100</span>`;
+  renderList("info-list", data.info_ranked.slice(0, TOP_N), ({ word, score, is_candidate }) => {
+    const star = markCandidates && is_candidate ? '<span class="star">*</span>' : "";
+    return `<span class="result-word">${word}${star}</span><span class="result-score">${score}/100</span>`;
   }, (item) => markCandidates && item.is_candidate ? "candidate" : "");
 }
 
