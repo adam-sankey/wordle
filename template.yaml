@@ -32,8 +32,8 @@ Resources:
       FunctionName: five-letter-ai-suggest
       CodeUri: backend/
       Handler: ai_handler.lambda_handler
-      # Network-bound (waits on the Claude API), so no need for the solver's full vCPU
-      MemorySize: 512
+      # Re-runs the CPU-bound entropy ranking before calling Claude, so it
+      # needs the same full vCPU as the solver (inherited from Globals)
       Environment:
         Variables:
           CLAUDE_API_KEY_PARAM: claude
