@@ -36,11 +36,20 @@
         </div>
       </div>
       <p class="hint">Click a tile to cycle: <span class="swatch grey-swatch">grey</span> not in word → <span class="swatch green-swatch">green</span> right place → <span class="swatch yellow-swatch">yellow</span> wrong place</p>
-      <button id="submit-btn">Get Suggestions</button>
+      <div id="button-row">
+        <button id="submit-btn">Update Word Lists</button>
+        <button id="ai-btn">✦ Get AI Suggestion</button>
+      </div>
+      <p class="hint">Update Word Lists recalculates the ranked lists below from your guesses. Get AI Suggestion asks Claude to pick the best next guess from those lists.</p>
     </section>
 
     <section id="results" hidden>
       <p id="candidates-count"></p>
+      <div id="ai-suggestion" hidden>
+        <p id="ai-label">✦ Claude suggests</p>
+        <p id="ai-word"></p>
+        <p id="ai-reasoning"></p>
+      </div>
       <div id="results-grid">
         <div>
           <h3>Frequency Score</h3>

@@ -26,6 +26,30 @@ Resources:
             Method: POST
             ApiId: !Ref HttpApi
 
+  AiSuggestFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      FunctionName: five-letter-ai-suggest
+      CodeUri: backend/
+      Handler: ai_handler.lambda_handler
+      # Network-bound (waits on the Claude API), so no need for the solver's full vCPU
+      MemorySize: 512
+      Environment:
+        Variables:
+          CLAUDE_API_KEY_PARAM: claude
+      Policies:
+        - Statement:
+            - Effect: Allow
+              Action: ssm:GetParameter
+              Resource: !Sub arn:aws:ssm:${AWS::Region}:${AWS::AccountId}:parameter/claude
+      Events:
+        ApiPost:
+          Type: HttpApi
+          Properties:
+            Path: /api/ai-suggest
+            Method: POST
+            ApiId: !Ref HttpApi
+
   HttpApi:
     Type: AWS::Serverless::HttpApi
     Properties:

@@ -1,5 +1,6 @@
 // Change to the full API Gateway URL when testing locally outside of CloudFront
 const API_URL = "/api/solve";
+const AI_URL = "/api/ai-suggest";
 
 const TOP_N = 10;
 
@@ -21,6 +22,7 @@ document.addEventListener("DOMContentLoaded", () => {
     if (e.key === "Enter") submitGuess();
   });
   document.getElementById("submit-btn").addEventListener("click", submitGuess);
+  document.getElementById("ai-btn").addEventListener("click", getAiSuggestion);
   document.getElementById("reset-btn").addEventListener("click", reset);
 
   document.getElementById("word-input").focus();
@@ -117,11 +119,46 @@ function appendHistory(word, result) {
   document.getElementById("history").appendChild(row);
 }
 
+// ── AI suggestion ─────────────────────────────────────────────────────────────
+
+async function getAiSuggestion() {
+  clearError();
+  const btn = document.getElementById("ai-btn");
+  btn.disabled = true;
+  btn.textContent = "Asking Claude…";
+  try {
+    const res = await fetch(AI_URL, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ guesses }),
+    });
+    if (!res.ok) throw new Error(await res.text());
+    renderAiSuggestion(await res.json());
+  } catch {
+    showError("Could not get an AI suggestion — please try again.");
+  } finally {
+    btn.disabled = false;
+    btn.textContent = "✦ Get AI Suggestion";
+  }
+}
+
+function renderAiSuggestion({ recommendation, reasoning }) {
+  document.getElementById("results").hidden = false;
+  document.getElementById("ai-suggestion").hidden = false;
+  document.getElementById("ai-word").textContent = recommendation;
+  document.getElementById("ai-reasoning").textContent = reasoning;
+}
+
+function hideAiSuggestion() {
+  document.getElementById("ai-suggestion").hidden = true;
+}
+
 // ── Results ───────────────────────────────────────────────────────────────────
 
 function renderResults(data) {
   const section = document.getElementById("results");
   section.hidden = false;
+  hideAiSuggestion();
 
   const count = data.candidates_count;
   const countEl = document.getElementById("candidates-count");
@@ -168,6 +205,7 @@ function renderList(id, items, toHTML, className = () => "") {
 function showSolved(word) {
   const section = document.getElementById("results");
   section.hidden = false;
+  hideAiSuggestion();
   document.getElementById("candidates-count").textContent = `Solved! The word was ${word}.`;
   document.getElementById("freq-list").innerHTML = "";
   document.getElementById("info-list").innerHTML = "";
@@ -195,7 +233,7 @@ function reset() {
 function setLoading(on) {
   const btn = document.getElementById("submit-btn");
   btn.disabled = on;
-  btn.textContent = on ? "Calculating…" : "Get Suggestions";
+  btn.textContent = on ? "Calculating…" : "Update Word Lists";
 }
 
 function showError(msg) {
