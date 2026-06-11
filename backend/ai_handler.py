@@ -44,7 +44,8 @@ _client = None
 def _get_client():
     global _client
     if _client is None:
-        ssm = boto3.client("ssm")
+        # The key lives in a different region than the stack
+        ssm = boto3.client("ssm", region_name=os.environ.get("CLAUDE_PARAM_REGION", "us-west-1"))
         api_key = ssm.get_parameter(
             Name=os.environ.get("CLAUDE_API_KEY_PARAM", "claude"),
             WithDecryption=True,

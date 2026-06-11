@@ -37,11 +37,13 @@ Resources:
       Environment:
         Variables:
           CLAUDE_API_KEY_PARAM: claude
+          # The API key parameter lives in us-west-1; the stack deploys to us-east-1
+          CLAUDE_PARAM_REGION: us-west-1
       Policies:
         - Statement:
             - Effect: Allow
               Action: ssm:GetParameter
-              Resource: !Sub arn:aws:ssm:${AWS::Region}:${AWS::AccountId}:parameter/claude
+              Resource: !Sub arn:aws:ssm:us-west-1:${AWS::AccountId}:parameter/claude
       Events:
         ApiPost:
           Type: HttpApi
