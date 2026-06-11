@@ -160,10 +160,21 @@ button:disabled { opacity: 0.45; cursor: not-allowed; }
 #results-grid {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 24px;
+  column-gap: 24px;
 }
 
-@media (max-width: 480px) { #results-grid { grid-template-columns: 1fr; } }
+/* Each column shares the parent's rows so the heading, description, and
+   list line up across columns regardless of description length. */
+#results-grid > div {
+  display: grid;
+  grid-template-rows: subgrid;
+  grid-row: span 3;
+}
+
+@media (max-width: 480px) {
+  #results-grid { grid-template-columns: 1fr; row-gap: 24px; }
+  #results-grid > div { display: block; grid-row: auto; }
+}
 
 #results h3 {
   font-size: 0.8rem;
