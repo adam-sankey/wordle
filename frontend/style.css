@@ -8,6 +8,7 @@
   --text:   #ffffff;
   --muted:  #818384;
   --ai:     #7c5cbf;
+  --gemini: #4285f4;
 }
 
 * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -150,6 +151,8 @@ button:disabled { opacity: 0.45; cursor: not-allowed; }
 
 #ai-btn { background: var(--ai); }
 
+#gemini-btn { background: var(--gemini); }
+
 #reset-btn { background: var(--border); display: block; margin: 24px auto 0; }
 
 /* Results */
@@ -167,7 +170,8 @@ button:disabled { opacity: 0.45; cursor: not-allowed; }
   margin-bottom: 20px;
 }
 
-#ai-suggestion {
+#ai-suggestion,
+#gemini-suggestion {
   background: rgba(124, 92, 191, 0.12);
   border: 1px solid var(--ai);
   border-radius: 6px;
@@ -175,7 +179,13 @@ button:disabled { opacity: 0.45; cursor: not-allowed; }
   margin-bottom: 20px;
 }
 
-#ai-label {
+#gemini-suggestion {
+  background: rgba(66, 133, 244, 0.12);
+  border-color: var(--gemini);
+}
+
+#ai-label,
+#gemini-label {
   color: var(--ai);
   font-size: 0.75rem;
   font-weight: 700;
@@ -184,7 +194,10 @@ button:disabled { opacity: 0.45; cursor: not-allowed; }
   margin-bottom: 6px;
 }
 
-#ai-word {
+#gemini-label { color: var(--gemini); }
+
+#ai-word,
+#gemini-word {
   font-size: 1.3rem;
   font-weight: 700;
   letter-spacing: 0.15em;
@@ -192,7 +205,8 @@ button:disabled { opacity: 0.45; cursor: not-allowed; }
   margin-bottom: 6px;
 }
 
-#ai-reasoning {
+#ai-reasoning,
+#gemini-reasoning {
   font-size: 0.85rem;
   color: var(--muted);
   line-height: 1.5;

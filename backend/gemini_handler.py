@@ -1,8 +1,9 @@
 import json
 import os
 import re
+import urllib.error
+import urllib.request
 
-import anthropic
 import boto3
 
 from solver import solve
@@ -15,38 +16,64 @@ HEADERS = {
     "Access-Control-Allow-Headers": "Content-Type",
 }
 
-MODEL = "claude-haiku-4-5"
+# Alias that tracks Google's newest stable Flash model — the free tier covers
+# Flash models, and pinned versions get shut down (2.0 Flash died June 2026)
+MODEL = os.environ.get("GEMINI_MODEL", "gemini-flash-latest")
 
+# Gemini's responseSchema uses OpenAPI-style uppercase types and rejects
+# additionalProperties, so this can't share the Claude schema
 OUTPUT_SCHEMA = {
-    "type": "object",
+    "type": "OBJECT",
     "properties": {
         "recommendation": {
-            "type": "string",
+            "type": "STRING",
             "description": "The single 5-letter word to guess next, in uppercase",
         },
         "reasoning": {
-            "type": "string",
+            "type": "STRING",
             "description": "2-3 sentences explaining the choice",
         },
     },
     "required": ["recommendation", "reasoning"],
-    "additionalProperties": False,
 }
 
-_client = None
+_api_key = None
 
 
-def _get_client():
-    global _client
-    if _client is None:
+def _get_api_key():
+    global _api_key
+    if _api_key is None:
         # The key lives in a different region than the stack
-        ssm = boto3.client("ssm", region_name=os.environ.get("CLAUDE_PARAM_REGION", "us-west-1"))
-        api_key = ssm.get_parameter(
-            Name=os.environ.get("CLAUDE_API_KEY_PARAM", "claude"),
+        ssm = boto3.client("ssm", region_name=os.environ.get("GEMINI_PARAM_REGION", "us-west-1"))
+        _api_key = ssm.get_parameter(
+            Name=os.environ.get("GEMINI_API_KEY_PARAM", "gemini"),
             WithDecryption=True,
         )["Parameter"]["Value"]
-        _client = anthropic.Anthropic(api_key=api_key)
-    return _client
+    return _api_key
+
+
+def _ask_gemini(prompt):
+    payload = {
+        "system_instruction": {"parts": [{"text": SYSTEM_PROMPT}]},
+        "contents": [{"role": "user", "parts": [{"text": prompt}]}],
+        "generationConfig": {
+            "responseMimeType": "application/json",
+            "responseSchema": OUTPUT_SCHEMA,
+            # Thinking tokens count toward this limit on Flash models, so
+            # leave generous headroom above the small JSON answer
+            "maxOutputTokens": 4096,
+        },
+    }
+    req = urllib.request.Request(
+        f"https://generativelanguage.googleapis.com/v1beta/models/{MODEL}:generateContent",
+        data=json.dumps(payload).encode(),
+        headers={"Content-Type": "application/json", "x-goog-api-key": _get_api_key()},
+    )
+    with urllib.request.urlopen(req, timeout=25) as resp:
+        data = json.loads(resp.read())
+    parts = data["candidates"][0]["content"]["parts"]
+    text = next(p["text"] for p in parts if "text" in p and not p.get("thought"))
+    return json.loads(text)
 
 
 def lambda_handler(event, context):
@@ -78,22 +105,14 @@ def lambda_handler(event, context):
                 "reasoning": "Only one possible word remains, so it must be the answer.",
             })
 
-        response = _get_client().messages.create(
-            model=MODEL,
-            max_tokens=1024,
-            system=SYSTEM_PROMPT,
-            messages=[{"role": "user", "content": build_prompt(guesses, data)}],
-            output_config={"format": {"type": "json_schema", "schema": OUTPUT_SCHEMA}},
-        )
-        text = next(b.text for b in response.content if b.type == "text")
-        result = json.loads(text)
+        result = _ask_gemini(build_prompt(guesses, data))
 
         return _ok({
             "recommendation": result["recommendation"].upper(),
             "reasoning": result["reasoning"],
         })
 
-    except anthropic.APIError:
+    except urllib.error.URLError:
         return _error(502, "the AI service is unavailable - please try again")
     except Exception:
         return _error(500, "internal error")

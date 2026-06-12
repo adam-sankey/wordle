@@ -57,6 +57,32 @@ Resources:
             Method: POST
             ApiId: !Ref HttpApi
 
+  GeminiSuggestFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      FunctionName: five-letter-gemini-suggest
+      CodeUri: backend/
+      Handler: gemini_handler.lambda_handler
+      # Each invocation also spends free-tier Gemini quota (10 req/min)
+      ReservedConcurrentExecutions: 5
+      Environment:
+        Variables:
+          GEMINI_API_KEY_PARAM: gemini
+          # Lives alongside the Claude key parameter in us-west-1
+          GEMINI_PARAM_REGION: us-west-1
+      Policies:
+        - Statement:
+            - Effect: Allow
+              Action: ssm:GetParameter
+              Resource: !Sub arn:aws:ssm:us-west-1:${AWS::AccountId}:parameter/gemini
+      Events:
+        ApiPost:
+          Type: HttpApi
+          Properties:
+            Path: /api/gemini-suggest
+            Method: POST
+            ApiId: !Ref HttpApi
+
   HttpApi:
     Type: AWS::Serverless::HttpApi
     Properties:
