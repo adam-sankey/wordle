@@ -18,6 +18,9 @@ Resources:
       FunctionName: five-letter-solver
       CodeUri: backend/
       Handler: handler.lambda_handler
+      # Hard cap on parallel executions — bounds worst-case Lambda spend on
+      # this public, CPU-heavy endpoint
+      ReservedConcurrentExecutions: 10
       Events:
         ApiPost:
           Type: HttpApi
@@ -32,6 +35,8 @@ Resources:
       FunctionName: five-letter-ai-suggest
       CodeUri: backend/
       Handler: ai_handler.lambda_handler
+      # Lower cap than the solver — each invocation also spends Claude tokens
+      ReservedConcurrentExecutions: 5
       # Re-runs the CPU-bound entropy ranking before calling Claude, so it
       # needs the same full vCPU as the solver (inherited from Globals)
       Environment:
@@ -56,6 +61,10 @@ Resources:
     Type: AWS::Serverless::HttpApi
     Properties:
       StageName: $default
+      # Reject floods at the gateway before they invoke (and bill) a Lambda
+      DefaultRouteSettings:
+        ThrottlingRateLimit: 5
+        ThrottlingBurstLimit: 10
       CorsConfiguration:
         AllowOrigins:
           - "*"
