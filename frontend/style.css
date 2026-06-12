@@ -144,9 +144,15 @@ button:disabled { opacity: 0.45; cursor: not-allowed; }
 
 #button-row {
   display: flex;
-  justify-content: space-between;
   gap: 12px;
   flex-wrap: wrap;
+}
+
+/* Equal widths regardless of label length; wraps on narrow screens */
+#button-row button {
+  flex: 1 1 150px;
+  padding: 12px 10px;
+  white-space: nowrap;
 }
 
 #ai-btn { background: var(--ai); }
